@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Gil Minogue Colab: beleza, lifestyle e experiências personalizadas no Shopping do Vale do Aço, em Ipatinga." />
+  <meta name="theme-color" content="#171512" />
+  <title>Gil Minogue Colab | Beleza & Lifestyle em Ipatinga</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/logo.png" />
+  <style>
+    :root {
+      --ink: #181613;
+      --ink-soft: #5f5a53;
+      --paper: #f6f1e9;
+      --paper-2: #eee7dc;
+      --white: #fffdfa;
+      --gold: #a6814b;
+      --gold-soft: #d7c09d;
+      --line: rgba(24, 22, 19, .14);
+      --shadow: 0 24px 70px rgba(34, 28, 20, .12);
+      --radius: 28px;
+      --container: min(1180px, calc(100vw - 40px));
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "DM Sans", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .28;
+      z-index: 100;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.065'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    ::selection { background: var(--gold-soft); color: var(--ink); }
+
+    .container { width: var(--container); margin-inline: auto; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 18px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .eyebrow::before { content: ""; width: 30px; height: 1px; background: currentColor; }
+    .serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; }
+    .section { padding: 120px 0; }
+    .section-title {
+      margin: 0;
+      max-width: 820px;
+      font: 400 clamp(42px, 6vw, 76px)/.98 "DM Serif Display", Georgia, serif;
+      letter-spacing: -.035em;
+    }
+    .section-copy {
+      max-width: 590px;
+      margin: 26px 0 0;
+      color: var(--ink-soft);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 54px;
+      padding: 0 24px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform .25s ease, background .25s ease, border-color .25s ease;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-dark { background: var(--ink); color: var(--white); }
+    .btn-dark:hover { background: #000; }
+    .btn-light { border-color: var(--line); background: rgba(255,255,255,.42); }
+    .btn-light:hover { background: var(--white); }
+    .arrow { width: 17px; height: 17px; }
+
+    .site-header {
+      position: fixed;
+      left: 0; right: 0; top: 0;
+      z-index: 80;
+      padding: 16px 0;
+      transition: background .25s ease, box-shadow .25s ease, padding .25s ease;
+    }
+    .site-header.scrolled {
+      padding: 10px 0;
+      background: rgba(246, 241, 233, .84);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 1px 0 var(--line);
+    }
+    .nav {
+      width: var(--container);
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; }
+    .brand img { width: 42px; height: 42px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(0,0,0,.08); }
+    .brand span { line-height: 1.05; }
+    .brand small { display: block; color: var(--ink-soft); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; margin-top: 4px; }
+    .nav-links { display: flex; align-items: center; gap: 30px; font-size: 14px; font-weight: 600; }
+    .nav-links a:not(.btn) { position: relative; }
+    .nav-links a:not(.btn)::after {
+      content: ""; position: absolute; left: 0; right: 100%; bottom: -6px; height: 1px; background: var(--ink); transition: right .25s ease;
+    }
+    .nav-links a:not(.btn):hover::after { right: 0; }
+    .menu-btn { display: none; border: 0; background: transparent; padding: 8px; }
+
+    .hero {
+      min-height: 100svh;
+      padding: 140px 0 70px;
+      display: grid;
+      align-items: center;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 500px; height: 500px;
+      border: 1px solid rgba(166,129,75,.25);
+      border-radius: 50%;
+      top: -190px; right: -130px;
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.04fr .96fr;
+      align-items: center;
+      gap: clamp(50px, 7vw, 100px);
+    }
+    .hero h1 {
+      margin: 0;
+      max-width: 700px;
+      font: 400 clamp(55px, 7vw, 92px)/.92 "DM Serif Display", Georgia, serif;
+      letter-spacing: -.055em;
+    }
+    .hero h1 em { color: var(--gold); font-weight: 400; }
+    .hero-copy { margin: 30px 0 0; max-width: 580px; color: var(--ink-soft); font-size: 18px; line-height: 1.7; }
+    .hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 34px; }
+    .hero-meta { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 46px; padding-top: 25px; border-top: 1px solid var(--line); }
+    .hero-meta span { display: grid; gap: 5px; color: var(--ink-soft); font-size: 12px; letter-spacing: .04em; }
+    .hero-meta strong { color: var(--ink); font-size: 14px; }
+
+    .hero-visual { position: relative; min-height: 650px; }
+    .hero-main {
+      position: absolute;
+      inset: 0 60px 30px 0;
+      border-radius: 180px 180px 28px 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #ddd;
+    }
+    .hero-main img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; transform: scale(1.03); }
+    .hero-main::after { content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(22,18,15,.28), transparent 40%); }
+    .hero-card {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: min(300px, 70%);
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.65);
+      border-radius: 22px;
+      background: rgba(255,253,250,.82);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(20, 16, 12, .16);
+    }
+    .hero-card strong { display: block; font: 400 31px/1 "DM Serif Display", serif; }
+    .hero-card p { margin: 9px 0 0; color: var(--ink-soft); font-size: 13px; line-height: 1.55; }
+    .vertical-note {
+      position: absolute;
+      right: -34px;
+      top: 190px;
+      transform: rotate(90deg);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .manifesto { background: var(--ink); color: var(--white); overflow: hidden; }
+    .manifesto-grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 90px; align-items: start; }
+    .manifesto .eyebrow { color: var(--gold-soft); }
+    .manifesto .section-title { color: var(--white); }
+    .manifesto .section-copy { color: rgba(255,253,250,.68); }
+    .manifesto-photo { position: sticky; top: 110px; border-radius: var(--radius); overflow: hidden; min-height: 650px; }
+    .manifesto-photo img { width: 100%; height: 100%; min-height: 650px; object-fit: cover; object-position: 45% center; }
+    .manifesto-photo::after { content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.35), transparent 45%); }
+    .manifesto-quote { margin-top: 90px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,.18); font: 400 clamp(29px, 3vw, 46px)/1.12 "DM Serif Display", serif; color: var(--gold-soft); }
+
+    .services-head { display: flex; align-items: end; justify-content: space-between; gap: 50px; }
+    .services-head .section-copy { margin-bottom: 4px; }
+    .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 64px; }
+    .service-card {
+      min-height: 330px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: rgba(255,255,255,.28);
+      transition: transform .28s ease, box-shadow .28s ease, background .28s ease;
+    }
+    .service-card:hover { transform: translateY(-7px); background: var(--white); box-shadow: 0 20px 55px rgba(32,25,17,.09); }
+    .service-num { font-size: 11px; font-weight: 700; letter-spacing: .16em; color: var(--gold); }
+    .service-card h3 { margin: 0; font: 400 33px/1.02 "DM Serif Display", serif; }
+    .service-card p { margin: 15px 0 0; color: var(--ink-soft); line-height: 1.6; font-size: 14px; }
+    .service-link { margin-top: 24px; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+
+    .results { padding-top: 30px; }
+    .results-header { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: end; }
+    .results-note { border-left: 1px solid var(--line); padding-left: 28px; color: var(--ink-soft); line-height: 1.65; }
+    .results-grid { display: grid; grid-template-columns: 1.1fr .9fr .9fr; gap: 16px; margin-top: 62px; }
+    .result-card { position: relative; min-height: 520px; border-radius: 24px; overflow: hidden; background: #ddd; }
+    .result-card:nth-child(2), .result-card:nth-child(3) { min-height: 440px; margin-top: 80px; }
+    .result-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+    .result-card:hover img { transform: scale(1.035); }
+    .result-card::after { content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(19,16,13,.65), transparent 45%); }
+    .result-label { position: absolute; z-index: 2; left: 22px; right: 22px; bottom: 20px; display:flex; align-items:end; justify-content:space-between; color:#fff; }
+    .result-label strong { font: 400 28px/1 "DM Serif Display", serif; }
+    .result-label small { max-width: 130px; text-align:right; color:rgba(255,255,255,.7); }
+
+    .journey { background: var(--paper-2); }
+    .journey-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 90px; align-items: center; }
+    .journey-photo { position: relative; border-radius: 28px; overflow: hidden; min-height: 650px; box-shadow: var(--shadow); }
+    .journey-photo img { width: 100%; height: 100%; min-height: 650px; object-fit: cover; }
+    .steps { margin-top: 44px; }
+    .step { display: grid; grid-template-columns: 46px 1fr; gap: 18px; padding: 24px 0; border-top: 1px solid var(--line); }
+    .step:last-child { border-bottom: 1px solid var(--line); }
+    .step-index { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); display:grid; place-items:center; font-size:12px; font-weight:700; }
+    .step h3 { margin: 2px 0 6px; font-size: 17px; }
+    .step p { margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
+
+    .testimonials[hidden] { display: none; }
+    .testimonial-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 55px; }
+    .testimonial { padding: 28px; border: 1px solid var(--line); border-radius: 22px; }
+    .testimonial p { font: 400 24px/1.25 "DM Serif Display", serif; }
+
+    .location { background: var(--white); }
+    .location-grid { display:grid; grid-template-columns: .82fr 1.18fr; gap: 60px; align-items: stretch; }
+    .location-info { padding: 20px 0; display:flex; flex-direction:column; justify-content:space-between; }
+    .location-lines { margin-top: 45px; }
+    .location-line { display:grid; grid-template-columns: 100px 1fr; gap: 20px; padding: 17px 0; border-top: 1px solid var(--line); }
+    .location-line:last-child { border-bottom: 1px solid var(--line); }
+    .location-line span { color: var(--ink-soft); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+    .location-line strong { font-weight: 600; }
+    .map { min-height: 560px; border-radius: 28px; overflow: hidden; box-shadow: var(--shadow); }
+    .map iframe { width:100%; height:100%; border:0; filter: grayscale(1) contrast(.9); }
+
+    .faq-grid { display:grid; grid-template-columns: .7fr 1.3fr; gap: 90px; }
+    .faq-list { border-top: 1px solid var(--line); }
+    details { border-bottom: 1px solid var(--line); }
+    summary { list-style:none; cursor:pointer; padding: 24px 4px; font-weight:700; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    summary::-webkit-details-marker { display:none; }
+    summary::after { content:"+"; width:28px; height:28px; border:1px solid var(--line); border-radius:50%; display:grid; place-items:center; transition:transform .25s ease; }
+    details[open] summary::after { transform:rotate(45deg); }
+    details p { margin:0; padding:0 50px 24px 4px; color:var(--ink-soft); line-height:1.65; }
+
+    .final-cta { padding: 40px 0 110px; }
+    .cta-box {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      padding: clamp(48px, 8vw, 100px);
+      background: var(--ink);
+      color: var(--white);
+      text-align:center;
+    }
+    .cta-box::before, .cta-box::after { content:""; position:absolute; border:1px solid rgba(215,192,157,.25); border-radius:50%; }
+    .cta-box::before { width:420px; height:420px; left:-200px; bottom:-250px; }
+    .cta-box::after { width:340px; height:340px; right:-160px; top:-180px; }
+    .cta-box h2 { position:relative; z-index:1; max-width:850px; margin:0 auto; font:400 clamp(44px,6vw,78px)/.98 "DM Serif Display",serif; letter-spacing:-.04em; }
+    .cta-box p { position:relative; z-index:1; max-width:600px; margin:24px auto 32px; color:rgba(255,255,255,.66); line-height:1.7; }
+    .cta-box .btn { position:relative; z-index:1; background:var(--white); color:var(--ink); }
+
+    footer { padding: 28px 0 40px; border-top:1px solid var(--line); }
+    .footer-grid { display:flex; align-items:center; justify-content:space-between; gap:25px; color:var(--ink-soft); font-size:12px; }
+    .footer-links { display:flex; gap:20px; }
+
+    .whatsapp-float {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 75;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: #1f9c5b;
+      box-shadow: 0 12px 30px rgba(14,98,54,.3);
+      transition: transform .25s ease;
+    }
+    .whatsapp-float:hover { transform: translateY(-4px) scale(1.03); }
+    .whatsapp-float svg { width: 27px; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s ease, transform .75s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+
+    @media (max-width: 980px) {
+      .section { padding: 90px 0; }
+      .nav-links { display:none; position:absolute; top:76px; left:20px; right:20px; padding:22px; border-radius:20px; background:var(--white); box-shadow:var(--shadow); flex-direction:column; align-items:stretch; }
+      .nav-links.open { display:flex; }
+      .menu-btn { display:block; }
+      .hero-grid, .manifesto-grid, .journey-grid, .location-grid, .faq-grid { grid-template-columns:1fr; }
+      .hero { padding-top:120px; }
+      .hero-visual { min-height:590px; }
+      .hero-main { inset:0 45px 28px 0; }
+      .manifesto-photo { position:relative; top:auto; min-height:500px; order:2; }
+      .manifesto-photo img { min-height:500px; }
+      .services-head, .results-header { display:block; }
+      .services-head .section-copy, .results-note { margin-top:26px; }
+      .results-note { border-left:0; border-top:1px solid var(--line); padding:24px 0 0; }
+      .services-grid { grid-template-columns:repeat(2,1fr); }
+      .results-grid { grid-template-columns:1fr 1fr; }
+      .result-card:first-child { grid-column:1/-1; min-height:560px; }
+      .result-card:nth-child(2), .result-card:nth-child(3) { margin-top:0; }
+      .location-grid { gap:35px; }
+      .map { min-height:480px; }
+    }
+
+    @media (max-width: 640px) {
+      :root { --container: min(100% - 28px, 1180px); --radius:22px; }
+      .section { padding:76px 0; }
+      .site-header { padding:10px 0; }
+      .brand span { font-size:13px; }
+      .brand small { font-size:8px; }
+      .hero { min-height:auto; padding:108px 0 60px; }
+      .hero h1 { font-size:clamp(48px,15vw,68px); }
+      .hero-copy { font-size:16px; }
+      .hero-actions .btn { width:100%; }
+      .hero-meta { gap:18px; }
+      .hero-visual { min-height:490px; margin-top:10px; }
+      .hero-main { inset:0 20px 22px 0; border-radius:120px 120px 24px 24px; }
+      .hero-card { right:-3px; width:72%; padding:17px; }
+      .hero-card strong { font-size:25px; }
+      .vertical-note { display:none; }
+      .section-title { font-size:clamp(40px,12vw,57px); }
+      .section-copy { font-size:16px; }
+      .manifesto-grid, .journey-grid { gap:48px; }
+      .manifesto-photo, .manifesto-photo img, .journey-photo, .journey-photo img { min-height:470px; }
+      .manifesto-quote { margin-top:55px; }
+      .services-grid, .results-grid, .testimonial-grid { grid-template-columns:1fr; }
+      .service-card { min-height:260px; }
+      .result-card, .result-card:first-child, .result-card:nth-child(2), .result-card:nth-child(3) { grid-column:auto; min-height:480px; }
+      .location-line { grid-template-columns:1fr; gap:7px; }
+      .map { min-height:390px; }
+      .faq-grid { gap:40px; }
+      .cta-box { border-radius:24px; padding:58px 22px; }
+      .footer-grid { flex-direction:column; align-items:flex-start; }
+      .whatsapp-float { width:54px; height:54px; right:14px; bottom:14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *, *::before, *::after { animation:none !important; transition:none !important; }
+      .reveal { opacity:1; transform:none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="nav" aria-label="Navegação principal">
+      <a class="brand" href="#top" aria-label="Gil Minogue Colab, início">
+        <img src="assets/logo.png" alt="Símbolo Gil Minogue Colab" />
+        <span>Gil Minogue Colab<small>Beleza & Lifestyle</small></span>
+      </a>
+      <button class="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="nav-links">
+        <a href="#experiencia">Experiência</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#resultados">Resultados</a>
+        <a href="#localizacao">Localização</a>
+        <a class="btn btn-dark js-whatsapp" data-message="Olá! Vim pelo site da Gil Minogue Colab e gostaria de agendar um horário." href="#">Agendar horário</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <p class="eyebrow">Shopping do Vale do Aço • Ipatinga</p>
+          <h1>Beleza que não muda quem você é. <em>Revela.</em></h1>
+          <p class="hero-copy">Um espaço onde técnica, cuidado e boas conversas se encontram para criar resultados que combinam com a sua identidade.</p>
+          <div class="hero-actions">
+            <a class="btn btn-dark js-whatsapp" data-message="Olá! Conheci a Gil Minogue Colab pelo site e quero agendar meu horário." href="#">Quero agendar meu horário
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn-light" href="#experiencia">Conhecer o espaço</a>
+          </div>
+          <div class="hero-meta">
+            <span><strong>Seg. a sáb.</strong>09h às 22h</span>
+            <span><strong>Atendimento personalizado</strong>Do diagnóstico ao resultado</span>
+            <span><strong>11,9 mil+</strong>Pessoas acompanhando a marca</span>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="hero-main"><img src="assets/hero.webp" alt="Resultado de beleza realizado pela Gil Minogue Colab" /></div>
+          <div class="hero-card"><strong>Seu momento começa aqui.</strong><p>Conte o que você busca e fale diretamente com a equipe pelo WhatsApp.</p></div>
+          <div class="vertical-note">BELEZA • LIFESTYLE • COLAB</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section manifesto" id="experiencia">
+      <div class="container manifesto-grid">
+        <div class="manifesto-photo reveal">
+          <img src="assets/salon.webp" alt="Experiência no espaço Gil Minogue Colab" />
+        </div>
+        <div class="reveal">
+          <p class="eyebrow">A experiência Gil Minogue</p>
+          <h2 class="section-title">Mais do que um salão. Um ponto de encontro entre beleza e lifestyle.</h2>
+          <p class="section-copy">Cada atendimento começa com escuta. Entendemos sua rotina, seu estilo e o resultado que você procura para criar uma experiência leve, segura e realmente personalizada.</p>
+          <p class="manifesto-quote">“Onde a beleza e conversas inspiradoras florescem.”</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="servicos">
+      <div class="container">
+        <div class="services-head reveal">
+          <div>
+            <p class="eyebrow">Cuidados para a sua melhor versão</p>
+            <h2 class="section-title">Escolha como você quer se sentir quando sair daqui.</h2>
+          </div>
+          <p class="section-copy">A equipe direciona o atendimento ideal a partir do seu objetivo, histórico e momento atual do cabelo.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card reveal">
+            <span class="service-num">01</span>
+            <div><h3>Cortes & finalização</h3><p>Forma, movimento e acabamento pensados para valorizar seus traços e facilitar sua rotina.</p></div>
+            <a class="service-link js-whatsapp" data-message="Olá! Vim pelo site e quero saber mais sobre cortes e finalização." href="#">Consultar horários <span>↗</span></a>
+          </article>
+          <article class="service-card reveal">
+            <span class="service-num">02</span>
+            <div><h3>Coloração & mechas</h3><p>Tons, contraste e luminosidade com planejamento para preservar a beleza e a saúde dos fios.</p></div>
+            <a class="service-link js-whatsapp" data-message="Olá! Vim pelo site e quero saber mais sobre coloração e mechas." href="#">Consultar horários <span>↗</span></a>
+          </article>
+          <article class="service-card reveal">
+            <span class="service-num">03</span>
+            <div><h3>Tratamentos</h3><p>Protocolos selecionados de acordo com a necessidade real do cabelo, sem soluções genéricas.</p></div>
+            <a class="service-link js-whatsapp" data-message="Olá! Vim pelo site e quero saber mais sobre tratamentos capilares." href="#">Consultar horários <span>↗</span></a>
+          </article>
+          <article class="service-card reveal">
+            <span class="service-num">04</span>
+            <div><h3>Experiência personalizada</h3><p>Para quem quer orientação antes de decidir e um plano de cuidado alinhado ao próprio estilo.</p></div>
+            <a class="service-link js-whatsapp" data-message="Olá! Vim pelo site e gostaria de uma orientação personalizada para escolher meu atendimento." href="#">Falar com a equipe <span>↗</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section results" id="resultados">
+      <div class="container">
+        <div class="results-header reveal">
+          <div>
+            <p class="eyebrow">Galeria de resultados</p>
+            <h2 class="section-title">Detalhes que fazem você se olhar duas vezes.</h2>
+          </div>
+          <p class="results-note">Esta seção já está pronta para receber fotos de antes e depois, resultados por técnica e casos reais. Basta trocar as imagens na pasta <strong>assets</strong>.</p>
+        </div>
+        <div class="results-grid">
+          <figure class="result-card reveal">
+            <img src="assets/look-03.webp" alt="Resultado de cabelo com movimento e luminosidade" />
+            <figcaption class="result-label"><strong>Movimento</strong><small>Forma e luminosidade natural</small></figcaption>
+          </figure>
+          <figure class="result-card reveal">
+            <img src="assets/look-02.webp" alt="Resultado de cabelo loiro realizado no salão" />
+            <figcaption class="result-label"><strong>Luz</strong><small>Tons pensados para cada pele</small></figcaption>
+          </figure>
+          <figure class="result-card reveal">
+            <img src="assets/look-04.webp" alt="Resultado de transformação de cabelo masculino" />
+            <figcaption class="result-label"><strong>Identidade</strong><small>Estilo que combina com você</small></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section journey">
+      <div class="container journey-grid">
+        <div class="journey-photo reveal"><img src="assets/portrait-warm.webp" alt="Cliente durante atendimento personalizado" /></div>
+        <div class="reveal">
+          <p class="eyebrow">Do primeiro contato ao espelho</p>
+          <h2 class="section-title">Uma jornada simples, sem dúvida e sem pressa.</h2>
+          <div class="steps">
+            <div class="step"><span class="step-index">01</span><div><h3>Conte o que você procura</h3><p>Você chega ao WhatsApp com uma mensagem pronta e explica seu objetivo.</p></div></div>
+            <div class="step"><span class="step-index">02</span><div><h3>Receba a orientação da equipe</h3><p>A equipe indica o serviço, profissional e tempo de atendimento mais adequados.</p></div></div>
+            <div class="step"><span class="step-index">03</span><div><h3>Confirme seu horário</h3><p>Escolha a melhor disponibilidade e chegue sabendo que seu atendimento foi pensado para você.</p></div></div>
+          </div>
+          <a class="btn btn-dark js-whatsapp" data-message="Olá! Quero receber uma orientação e agendar meu atendimento na Gil Minogue Colab." href="#" style="margin-top:32px">Começar pelo WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!--
+      BLOCO DE DEPOIMENTOS PRONTO PARA ATIVAR.
+      Remova o atributo hidden e substitua os textos por avaliações reais.
+    -->
+    <section class="section testimonials" hidden>
+      <div class="container">
+        <p class="eyebrow">O que dizem sobre a experiência</p>
+        <h2 class="section-title">Confiança construída em cada atendimento.</h2>
+        <div class="testimonial-grid">
+          <article class="testimonial"><p>“Insira aqui um depoimento real da cliente.”</p><strong>Nome da cliente</strong></article>
+          <article class="testimonial"><p>“Insira aqui um depoimento real da cliente.”</p><strong>Nome da cliente</strong></article>
+          <article class="testimonial"><p>“Insira aqui um depoimento real da cliente.”</p><strong>Nome da cliente</strong></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section location" id="localizacao">
+      <div class="container location-grid">
+        <div class="location-info reveal">
+          <div>
+            <p class="eyebrow">Venha viver essa experiência</p>
+            <h2 class="section-title">No coração do Vale do Aço.</h2>
+            <div class="location-lines">
+              <div class="location-line"><span>Endereço</span><strong>Shopping do Vale do Aço, Ipatinga • MG</strong></div>
+              <div class="location-line"><span>Horários</span><strong>Segunda a sábado, das 09h às 22h</strong></div>
+              <div class="location-line"><span>Telefone</span><strong>(31) 3821-3399</strong></div>
+            </div>
+          </div>
+          <a class="btn btn-dark js-whatsapp" data-message="Olá! Estou vendo a localização pelo site e gostaria de agendar um horário na Gil Minogue Colab." href="#" style="align-self:flex-start;margin-top:32px">Agendar agora</a>
+        </div>
+        <div class="map reveal">
+          <iframe title="Mapa para o Shopping do Vale do Aço" loading="lazy" allowfullscreen src="https://www.google.com/maps?q=Shopping%20do%20Vale%20do%20A%C3%A7o%20Ipatinga&output=embed"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container faq-grid">
+        <div class="reveal">
+          <p class="eyebrow">Dúvidas frequentes</p>
+          <h2 class="section-title">Antes de agendar.</h2>
+        </div>
+        <div class="faq-list reveal">
+          <details><summary>Preciso saber exatamente qual serviço quero?</summary><p>Não. Você pode explicar o resultado que procura e a equipe ajuda a direcionar o atendimento mais adequado.</p></details>
+          <details><summary>Como faço para consultar valores?</summary><p>Os valores podem variar conforme técnica, comprimento, volume e condição atual do cabelo. Pelo WhatsApp, a equipe orienta a melhor forma de avaliação.</p></details>
+          <details><summary>Onde fica a Gil Minogue Colab?</summary><p>No Shopping do Vale do Aço, em Ipatinga, Minas Gerais.</p></details>
+          <details><summary>Qual é o horário de atendimento?</summary><p>De segunda a sábado, das 09h às 22h.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container">
+        <div class="cta-box reveal">
+          <h2>Seu próximo resultado começa com uma boa conversa.</h2>
+          <p>Fale com a equipe, conte o que você busca e receba a orientação certa antes de escolher seu horário.</p>
+          <a class="btn js-whatsapp" data-message="Olá! Vim pelo site da Gil Minogue Colab e quero agendar meu próximo atendimento." href="#">Falar com a equipe no WhatsApp
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <span>© <span id="year"></span> Gil Minogue Colab. Todos os direitos reservados.</span>
+      <div class="footer-links"><a href="https://instagram.com/gilminoguecolab" target="_blank" rel="noopener">Instagram</a><a href="#top">Voltar ao topo ↑</a></div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float js-whatsapp" data-message="Olá! Vim pelo site da Gil Minogue Colab e gostaria de agendar um horário." href="#" aria-label="Falar no WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M19.1 17.6c-.4-.2-2.2-1.1-2.5-1.2-.3-.1-.6-.2-.8.2-.2.4-.9 1.2-1.1 1.4-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3-1.8-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.7.1-.3.1-.5 0-.7-.1-.2-.8-2-1.1-2.7-.3-.7-.6-.6-.8-.6h-.7c-.3 0-.7.1-1 .5-.3.4-1.3 1.3-1.3 3.2s1.4 3.7 1.6 4c.2.3 2.8 4.3 6.8 6 1 .4 1.7.7 2.3.9 1 .3 1.9.3 2.6.2.8-.1 2.2-.9 2.5-1.8.3-.9.3-1.7.2-1.8-.1-.2-.4-.3-.8-.5z"/><path d="M26.7 5.3A14.9 14.9 0 0 0 3.2 23.2L1 31l8-2.1A14.9 14.9 0 0 0 26.7 5.3zm-10.6 23c-2.3 0-4.5-.6-6.5-1.8l-.5-.3-4.7 1.2 1.3-4.6-.3-.5a12.3 12.3 0 1 1 10.7 6z"/></svg>
+  </a>
+
+  <script>
+    // Troque apenas este número caso o WhatsApp correto seja diferente.
+    const WHATSAPP_NUMBER = "553138213399";
+
+    document.querySelectorAll('.js-whatsapp').forEach(link => {
+      const message = link.dataset.message || 'Olá! Vim pelo site e gostaria de mais informações.';
+      link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      link.target = '_blank';
+      link.rel = 'noopener';
+    });
+
+    const header = document.querySelector('.site-header');
+    const menuButton = document.querySelector('.menu-btn');
+    const menu = document.querySelector('.nav-links');
+
+    const updateHeader = () => header.classList.toggle('scrolled', window.scrollY > 18);
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+
+    menuButton.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', open);
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      menu.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+    }));
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
